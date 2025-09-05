@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: ms-stock
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: ms-stock
+      username:
+      password:
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
