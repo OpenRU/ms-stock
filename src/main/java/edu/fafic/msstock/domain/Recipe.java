@@ -2,7 +2,6 @@ package edu.fafic.msstock.domain;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -14,7 +13,6 @@ public class Recipe {
     @Id
     private String id;
 
-    @DBRef
     private String menuId;
 
     private List<Ingredient> ingredients;
