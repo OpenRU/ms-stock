@@ -1,6 +1,6 @@
 package edu.fafic.msstock.api.handler;
 
-import edu.fafic.msstock.api.error.NotFoundException;
+import edu.fafic.msstock.application.error.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.validation.FieldError;

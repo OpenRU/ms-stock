@@ -1,4 +1,4 @@
-package edu.fafic.msstock.api.error;
+package edu.fafic.msstock.application.error;
 
 public class NotFoundException extends RuntimeException {
 

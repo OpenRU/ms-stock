@@ -1,7 +1,7 @@
 package edu.fafic.msstock.infrastructure.service;
 
-import edu.fafic.msstock.api.error.NotFoundException;
 import edu.fafic.msstock.application.dto.ItemDTO;
+import edu.fafic.msstock.application.error.NotFoundException;
 import edu.fafic.msstock.application.mapper.ItemMapper;
 import edu.fafic.msstock.domain.Item;
 import edu.fafic.msstock.infrastructure.repository.ItemRepository;

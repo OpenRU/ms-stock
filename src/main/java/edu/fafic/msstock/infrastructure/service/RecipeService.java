@@ -1,7 +1,7 @@
 package edu.fafic.msstock.infrastructure.service;
 
-import edu.fafic.msstock.api.error.NotFoundException;
 import edu.fafic.msstock.application.dto.RecipeDTO;
+import edu.fafic.msstock.application.error.NotFoundException;
 import edu.fafic.msstock.application.mapper.RecipeMapper;
 import edu.fafic.msstock.domain.Recipe;
 import edu.fafic.msstock.infrastructure.repository.RecipeRepository;
