@@ -16,7 +16,7 @@ public class IngredientDTO {
     private String name;
 
     @Min(value = 1, message = "O campo 'quantity' deve ser maior ou igual a 1")
-    @Schema(description = "Quantidade disponível do ingrediente", example = "2")
+    @Schema(description = "Quantidade disponível do ingrediente", example = "2", minimum = "1")
     private int quantity;
 
     @NotNull(message = "O campo 'measurementUnit' é obrigatória")
