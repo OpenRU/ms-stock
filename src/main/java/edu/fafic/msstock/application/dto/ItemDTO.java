@@ -17,7 +17,10 @@ public class ItemDTO {
     @Min(value = 0, message = "O campo 'quantity' não pode ser negativo")
     private int quantity;
 
-    @NotNull(message = "O campo 'measurementUnit' é obrigatória")
+    @NotNull(message = "O campo 'measurementUnit' é obrigatório")
     private MeasurementUnit measurementUnit;
+    
+    @NotNull(message = "O campo 'supplier' é obrigatório")
+    private String supplier;
 
 }
