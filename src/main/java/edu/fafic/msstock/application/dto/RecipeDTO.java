@@ -1,5 +1,6 @@
 package edu.fafic.msstock.application.dto;
 
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -20,7 +21,11 @@ public class RecipeDTO {
     private String menuId;
 
     @NotEmpty(message = "O campo 'ingredients' não pode estar vazio")
-    @Schema(description = "Lista de ingredientes", example = "{'name': 'Café Torrado', 'quantity': 1, 'measurementUnit': UNIT}")
+    @ArraySchema(
+            schema = @Schema(implementation = IngredientDTO.class),
+            arraySchema = @Schema(description = "Lista de ingredientes"),
+            minItems = 1
+    )
     private List<@Valid IngredientDTO> ingredients;
 
 }
