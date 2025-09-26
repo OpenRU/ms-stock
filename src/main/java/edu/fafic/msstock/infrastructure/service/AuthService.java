@@ -14,11 +14,11 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AuthService {
 
-    private final RestClient http;
-    private final HttpServletRequest request;
+    private final RestClient http = RestClient.create();
+    private final String MS_AUTH = "http://localhost/api/v1/"; // TODO: Inserir o endpoint da API de autenticação
+    private final String VALIDATION_ENDPOINT = "validate-token/";
 
-    private final String MS_AUTH = "/lonlon-api"; // TODO: Inserir o endpoint da API de autenticação
-    private final String VALIDATION_ENDPOINT = "/validate-token";
+    private final HttpServletRequest request;
 
     public boolean validateToken() {
         String token = request.getHeader("Authorization");
@@ -34,6 +34,7 @@ public class AuthService {
             HttpStatusCode status = http.post()
                     .uri(uri)
                     .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
                     .body(body)
                     .retrieve()
                     .toBodilessEntity()
