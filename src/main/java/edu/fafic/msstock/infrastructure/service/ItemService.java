@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class ItemService {
@@ -27,7 +29,13 @@ public class ItemService {
     }
 
     @Transactional(readOnly = true)
-    public ItemDTO findById(String id) {
+    public Optional<ItemDTO> findById(String id) {
+        Optional<Item> optional = itemRepository.findById(id);
+        return optional.map(itemMapper::toDTO);
+    }
+
+    @Transactional(readOnly = true)
+    public ItemDTO findOr404(String id) {
         Item entity = getEntityOr404(id);
         return itemMapper.toDTO(entity);
     }
@@ -53,6 +61,6 @@ public class ItemService {
 
     private Item getEntityOr404(String id) {
         return itemRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Item não encontrado: id=" + id));
+                .orElseThrow(() -> new NotFoundException("Item não encontrado"));
     }
 }

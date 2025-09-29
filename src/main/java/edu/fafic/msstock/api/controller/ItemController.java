@@ -25,35 +25,17 @@ public class ItemController {
 
     private final ItemService itemService;
 
-    @Operation(
-            summary = "Cria um novo item",
-            description = "Retorna o item criado e define o header Location com a URL do recurso"
-    )
-    @ApiResponse(
-            responseCode = "201",
-            description = "Criado",
-            headers = {
-                    @Header(name = "Location", description = "URL do recurso criado")
-            },
-            useReturnTypeSchema = true
-    )
+    @Operation(summary = "Cria um novo item")
+    @ApiResponse(responseCode = "201", description = "Criado", useReturnTypeSchema = true)
     @PostMapping
     public ResponseEntity<ItemDTO> create(@RequestBody @Valid ItemDTO dto) {
-        ItemDTO created = itemService.create(dto);
-
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(created.getId())
-                .toUri();
-
-        return ResponseEntity.created(location).body(created);
+        return ResponseEntity.ok(itemService.create(dto));
     }
 
     @Operation(summary = "Busca item por ID")
     @GetMapping("/{id}")
     public ResponseEntity<ItemDTO> findById(@PathVariable String id) {
-        return ResponseEntity.ok(itemService.findById(id));
+        return ResponseEntity.ok(itemService.findOr404(id));
     }
 
     @Operation(
