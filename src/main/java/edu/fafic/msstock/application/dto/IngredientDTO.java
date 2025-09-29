@@ -8,19 +8,19 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-@Schema(name = "Ingrediente", description = "Subdocumento de ingrediente para Receita")
+@Schema(name = "Ingredient", description = "Subschema de Ingredient em Recipe")
 public class IngredientDTO {
 
     @NotBlank(message = "O campo 'name' é obrigatório")
-    @Schema(description = "Nome do ingrediente", example = "Tomate")
+    @Schema(description = "Nome do ingredient", example = "Tomate")
     private String name;
 
     @Min(value = 1, message = "O campo 'quantity' deve ser maior ou igual a 1")
-    @Schema(description = "Quantidade disponível do ingrediente", example = "2", minimum = "1")
+    @Schema(description = "Quantidade disponível do ingredient", example = "2", minimum = "1")
     private int quantity;
 
     @NotNull(message = "O campo 'measurementUnit' é obrigatória")
-    @Schema(description = "Unidade de medida do ingrediente", example = "UNIT")
+    @Schema(description = "Unidade de medida do ingredient", example = "UNIT")
     private MeasurementUnit measurementUnit;
 
 }

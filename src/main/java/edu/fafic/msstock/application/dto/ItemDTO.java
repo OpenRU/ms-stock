@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-@Schema(name = "Item", description = "Documento do item no estoque")
+@Schema(name = "Item", description = "Schema do item no estoque")
 public class ItemDTO {
 
     @Schema(description = "Identificador do item", example = "64f1b2c3d4e5f6a7b8c9d0e1", accessMode = Schema.AccessMode.READ_ONLY)
