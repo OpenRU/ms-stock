@@ -1,6 +1,7 @@
 package edu.fafic.msstock.infrastructure.service;
 
 import edu.fafic.msstock.application.dto.ItemDTO;
+import edu.fafic.msstock.application.error.ConflictException;
 import edu.fafic.msstock.application.error.NotFoundException;
 import edu.fafic.msstock.application.mapper.ItemMapper;
 import edu.fafic.msstock.domain.Item;
@@ -21,31 +22,30 @@ public class ItemService {
 
     private final ItemMapper itemMapper;
 
-    @Transactional
     public ItemDTO create(ItemDTO dto) {
+        if (itemRepository.existsByNameAndSupplier(dto.getName(), dto.getSupplier())) {
+            throw new ConflictException("Já existe um item com esse nome e fornecedor");
+        }
+
         Item entity = itemMapper.toEntity(dto);
         Item saved = itemRepository.save(entity);
         return itemMapper.toDTO(saved);
     }
 
-    @Transactional(readOnly = true)
     public Optional<ItemDTO> findById(String id) {
         Optional<Item> optional = itemRepository.findById(id);
         return optional.map(itemMapper::toDTO);
     }
 
-    @Transactional(readOnly = true)
     public ItemDTO findOr404(String id) {
         Item entity = getEntityOr404(id);
         return itemMapper.toDTO(entity);
     }
 
-    @Transactional(readOnly = true)
     public Page<ItemDTO> findAll(Pageable pageable) {
         return itemRepository.findAll(pageable).map(itemMapper::toDTO);
     }
 
-    @Transactional
     public ItemDTO update(String id, ItemDTO dto) {
         Item existing = getEntityOr404(id);
         itemMapper.update(dto, existing);

@@ -1,5 +1,6 @@
 package edu.fafic.msstock.api.handler;
 
+import edu.fafic.msstock.application.error.ConflictException;
 import edu.fafic.msstock.application.error.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -18,6 +19,13 @@ public class GlobalExceptionHandler {
     public ProblemDetail handleNotFoundException(NotFoundException ex) {
         ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
         pd.setTitle("Recurso não encontrado");
+        return pd;
+    }
+
+    @ExceptionHandler(ConflictException.class)
+    public ProblemDetail handleConflictException(ConflictException ex) {
+        ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
+        pd.setTitle("Conflito ao tentar criar recurso");
         return pd;
     }
 
