@@ -1,6 +1,7 @@
 package edu.fafic.msstock.infrastructure.service;
 
 import edu.fafic.msstock.application.dto.RecipeDTO;
+import edu.fafic.msstock.application.error.ConflictException;
 import edu.fafic.msstock.application.error.NotFoundException;
 import edu.fafic.msstock.application.mapper.RecipeMapper;
 import edu.fafic.msstock.domain.Recipe;
@@ -9,7 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,25 +21,36 @@ public class RecipeService {
 
     private final RecipeMapper recipeMapper;
 
-    @Transactional
     public RecipeDTO create(RecipeDTO dto) {
+        Optional<Recipe> existing = recipeRepository.findByMenuId(dto.getMenuId());
+        if (existing.isPresent()) {
+            throw new ConflictException("Já existe uma receita para esse menu");
+        }
+
         Recipe entity = recipeMapper.toEntity(dto);
         Recipe saved = recipeRepository.save(entity);
         return recipeMapper.toDTO(saved);
     }
 
-    @Transactional(readOnly = true)
-    public RecipeDTO findById(String id) {
+    public Optional<RecipeDTO> findById(String id) {
+        Optional<Recipe> optional = recipeRepository.findById(id);
+        return optional.map(recipeMapper::toDTO);
+    }
+
+    public RecipeDTO findOr404(String id) {
         Recipe entity = getEntityOr404(id);
         return recipeMapper.toDTO(entity);
     }
 
-    @Transactional(readOnly = true)
+    public RecipeDTO findByMenuId(String menuId) {
+        Recipe entity = getByMenuIdOr404(menuId);
+        return recipeMapper.toDTO(entity);
+    }
+
     public Page<RecipeDTO> findAll(Pageable pageable) {
         return recipeRepository.findAll(pageable).map(recipeMapper::toDTO);
     }
 
-    @Transactional
     public RecipeDTO update(String id, RecipeDTO dto) {
         Recipe existing = getEntityOr404(id);
         recipeMapper.update(dto, existing);
@@ -45,14 +58,18 @@ public class RecipeService {
         return recipeMapper.toDTO(saved);
     }
 
-    @Transactional
     public void delete(String id) {
         Recipe existing = getEntityOr404(id);
         recipeRepository.delete(existing);
     }
 
+    private Recipe getByMenuIdOr404(String menuId) {
+        return recipeRepository.findByMenuId(menuId)
+                .orElseThrow(() -> new NotFoundException("Recipe não encontrada"));
+    }
+
     private Recipe getEntityOr404(String id) {
         return recipeRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Recipe não encontrado: id=" + id));
+                .orElseThrow(() -> new NotFoundException("Recipe não encontrado"));
     }
 }
