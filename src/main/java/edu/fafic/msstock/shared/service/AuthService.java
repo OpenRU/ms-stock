@@ -1,4 +1,4 @@
-package edu.fafic.msstock.infrastructure.service;
+package edu.fafic.msstock.shared.service;
 
 
 import jakarta.servlet.http.HttpServletRequest;

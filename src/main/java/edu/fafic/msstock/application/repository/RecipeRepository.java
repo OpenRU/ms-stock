@@ -1,4 +1,4 @@
-package edu.fafic.msstock.infrastructure.repository;
+package edu.fafic.msstock.application.repository;
 
 import edu.fafic.msstock.domain.Recipe;
 import org.springframework.data.mongodb.repository.MongoRepository;

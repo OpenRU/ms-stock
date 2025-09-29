@@ -1,4 +1,4 @@
-package edu.fafic.msstock.application.error;
+package edu.fafic.msstock.shared.error;
 
 public class ConflictException extends RuntimeException {
 

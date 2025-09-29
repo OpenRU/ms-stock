@@ -1,7 +1,7 @@
 package edu.fafic.msstock.api.controller;
 
 import edu.fafic.msstock.application.dto.RecipeDTO;
-import edu.fafic.msstock.infrastructure.service.RecipeService;
+import edu.fafic.msstock.application.service.RecipeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

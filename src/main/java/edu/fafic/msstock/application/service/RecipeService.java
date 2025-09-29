@@ -1,11 +1,11 @@
-package edu.fafic.msstock.infrastructure.service;
+package edu.fafic.msstock.application.service;
 
 import edu.fafic.msstock.application.dto.RecipeDTO;
-import edu.fafic.msstock.application.error.ConflictException;
-import edu.fafic.msstock.application.error.NotFoundException;
 import edu.fafic.msstock.application.mapper.RecipeMapper;
+import edu.fafic.msstock.application.repository.RecipeRepository;
 import edu.fafic.msstock.domain.Recipe;
-import edu.fafic.msstock.infrastructure.repository.RecipeRepository;
+import edu.fafic.msstock.shared.error.ConflictException;
+import edu.fafic.msstock.shared.error.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
