@@ -1,5 +1,6 @@
 package edu.fafic.msstock.application.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.fafic.msstock.shared.enums.MeasurementUnit;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
@@ -11,7 +12,8 @@ import lombok.Data;
 @Schema(name = "Item", description = "Documento do item no estoque")
 public class ItemDTO {
 
-    @Schema(description = "Identificador do item", example = "64f1b2c3d4e5f6a7b8c9d0e1")
+    @Schema(description = "Identificador do item", example = "64f1b2c3d4e5f6a7b8c9d0e1", accessMode = Schema.AccessMode.READ_ONLY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String id;
 
     @NotBlank(message = "O campo 'name' é obrigatório")

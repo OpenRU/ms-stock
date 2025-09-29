@@ -1,5 +1,6 @@
 package edu.fafic.msstock.application.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
@@ -13,7 +14,8 @@ import java.util.List;
 @Schema(name = "Receita", description = "Documento da receita de um cardápio")
 public class RecipeDTO {
 
-    @Schema(description = "Identificador da receita", example = "68be41b996833d950c093974")
+    @Schema(description = "Identificador da receita", example = "68be41b996833d950c093974", accessMode = Schema.AccessMode.READ_ONLY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String id;
 
     @NotNull(message = "O campo 'menuId' é obrigatório")
