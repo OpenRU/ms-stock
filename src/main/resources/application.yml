@@ -3,13 +3,11 @@ spring:
     name: ms-stock
   data:
     mongodb:
-      host: localhost
-      port: 27017
-      database: ms-stock
+      uri: ${MONGODB_URI}
 
 springdoc:
   swagger-ui:
     path: /swagger-ui
 
 auth:
-  uri: ${AUTH_URI}
+  uri: ${AUTH_URI:}
