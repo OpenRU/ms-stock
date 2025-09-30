@@ -3,45 +3,55 @@ package edu.fafic.msstock.shared.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
-import java.util.Map;
+import java.net.URI;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthService {
 
     private final RestClient http = RestClient.create();
-    private final String MS_AUTH = "http://localhost/api/v1/"; // TODO: Inserir o endpoint da API de autenticação
-    private final String VALIDATION_ENDPOINT = "validate-token/";
 
     private final HttpServletRequest request;
 
+    @Value("${auth.uri}")
+    private String AUTH_URI;
+
     public boolean validateToken() {
+        if (AUTH_URI == null || AUTH_URI.isBlank()) {
+            log.warn("Auth URI is not defined");
+            return true; // Bypass token validation if endpoint is not defined
+        }
+
         String token = request.getHeader("Authorization");
 
         if (token == null || token.isBlank()) {
+            log.warn("No token found in request");
             return false;
         }
 
-        String uri = MS_AUTH + VALIDATION_ENDPOINT;
-        Map<String, String> body = Map.of("token", token);
+        URI uri = URI.create(AUTH_URI + "/auth/validate-token/");
 
         try {
             HttpStatusCode status = http.post()
                     .uri(uri)
-                    .contentType(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON)
-                    .body(body)
+                    .header("Authorization", token)
                     .retrieve()
                     .toBodilessEntity()
                     .getStatusCode();
 
+            log.info("Token validation status: {}", status);
             return status.is2xxSuccessful();
         } catch (Exception e) {
+            log.warn("Error validating token", e);
             return false;
         }
     }
