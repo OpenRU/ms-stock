@@ -25,6 +25,9 @@ public class AuthFilter extends OncePerRequestFilter {
     private static final PathMatcher MATCHER = new AntPathMatcher();
 
     private static final List<String> WHITELIST = List.of(
+            "/static/**",
+            "/v3/api-docs/**",
+            "/swagger-resources/**",
             "/swagger-ui/**"
     );
 
