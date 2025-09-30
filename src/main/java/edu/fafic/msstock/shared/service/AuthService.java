@@ -24,13 +24,11 @@ public class AuthService {
     @Value("${auth.uri}")
     private String AUTH_URI;
 
-    public boolean validateToken() {
+    public boolean validateToken(String token) {
         if (AUTH_URI == null || AUTH_URI.isBlank()) {
             log.warn("Auth URI is not defined");
             return true; // Bypass token validation if endpoint is not defined
         }
-
-        String token = request.getHeader("Authorization");
 
         if (token == null || token.isBlank()) {
             log.warn("No token found in request");
