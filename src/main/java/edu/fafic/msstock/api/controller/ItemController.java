@@ -16,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/items")
 @RequiredArgsConstructor
@@ -45,16 +47,13 @@ public class ItemController {
         return ResponseEntity.ok(itemService.findOr404(id));
     }
 
-    @Operation(
-            summary = "Lista itens com paginação",
-            description = "Suporta paginação via parâmetros: page, size, sort"
-    )
+    @Operation(summary = "Lista itens")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK"),
     })
     @GetMapping
-    public ResponseEntity<Page<ItemDTO>> findAll(@ParameterObject Pageable pageable) {
-        return ResponseEntity.ok(itemService.findAll(pageable));
+    public ResponseEntity<List<ItemDTO>> findAll() {
+        return ResponseEntity.ok(itemService.findAll());
     }
 
     @Operation(summary = "Atualiza um item por id")

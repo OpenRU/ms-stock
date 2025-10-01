@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -42,8 +43,8 @@ public class ItemService {
         return itemMapper.toDTO(entity);
     }
 
-    public Page<ItemDTO> findAll(Pageable pageable) {
-        return itemRepository.findAll(pageable).map(itemMapper::toDTO);
+    public List<ItemDTO> findAll() {
+        return itemRepository.findAll().stream().map(itemMapper::toDTO).toList();
     }
 
     public ItemDTO update(String id, ItemDTO dto) {

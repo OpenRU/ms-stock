@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -47,8 +48,8 @@ public class RecipeService {
         return recipeMapper.toDTO(entity);
     }
 
-    public Page<RecipeDTO> findAll(Pageable pageable) {
-        return recipeRepository.findAll(pageable).map(recipeMapper::toDTO);
+    public List<RecipeDTO> findAll() {
+        return recipeRepository.findAll().stream().map(recipeMapper::toDTO).toList();
     }
 
     public RecipeDTO update(String id, RecipeDTO dto) {

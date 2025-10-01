@@ -16,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/recipes")
 @RequiredArgsConstructor
@@ -55,16 +57,13 @@ public class RecipeController {
         return ResponseEntity.ok(recipeService.findByMenuId(menuId));
     }
 
-    @Operation(
-            summary = "Lista receitas com paginação",
-            description = "Suporta paginação via parâmetros: page, size, sort"
-    )
+    @Operation(summary = "Lista receitas")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK"),
     })
     @GetMapping
-    public ResponseEntity<Page<RecipeDTO>> findAll(@ParameterObject Pageable pageable) {
-        return ResponseEntity.ok(recipeService.findAll(pageable));
+    public ResponseEntity<List<RecipeDTO>> findAll() {
+        return ResponseEntity.ok(recipeService.findAll());
     }
 
     @Operation(summary = "Atualiza uma receita por id")
