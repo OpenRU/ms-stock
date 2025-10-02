@@ -7,7 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 
 import java.net.URI;
@@ -31,7 +33,7 @@ public class AuthService {
         }
 
         if (token == null || token.isBlank()) {
-            log.warn("No token found in request");
+            log.warn("Token not found in request");
             return false;
         }
 
@@ -48,8 +50,8 @@ public class AuthService {
 
             log.info("Token validation status: {}", status);
             return status.is2xxSuccessful();
-        } catch (Exception e) {
-            log.warn("Error validating token", e);
+        } catch (HttpClientErrorException e) {
+            log.warn("Token validation failed: {}", e.getMessage());
             return false;
         }
     }
