@@ -1,0 +1,34 @@
+package edu.fafic.msstock.application.dto;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+
+import java.util.List;
+
+@Data
+@Schema(name = "Recipe", description = "Schema da recipe de um menu")
+public class RecipeDTO {
+
+    @Schema(description = "Identificador da recipe", example = "68be41b996833d950c093974", accessMode = Schema.AccessMode.READ_ONLY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String id;
+
+    @NotNull(message = "O campo 'menuId' é obrigatório")
+    @Schema(description = "Identificador do menu", example = "68be41c37a950ef3e44f9194")
+    private String menuId;
+
+    @NotEmpty(message = "O campo 'ingredients' não pode estar vazio")
+    @ArraySchema(
+            schema = @Schema(implementation = IngredientDTO.class),
+            arraySchema = @Schema(description = "Lista de Ingredients"),
+            minItems = 1,
+            uniqueItems = true
+    )
+    private List<@Valid IngredientDTO> ingredients;
+
+}
