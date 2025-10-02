@@ -1,12 +1,18 @@
 package edu.fafic.msstock.application.service;
 
+import edu.fafic.msstock.application.dto.IngredientDTO;
+import edu.fafic.msstock.application.dto.ProductionDTO;
 import edu.fafic.msstock.application.dto.RecipeDTO;
+import edu.fafic.msstock.application.mapper.IngredientMapper;
 import edu.fafic.msstock.application.mapper.RecipeMapper;
 import edu.fafic.msstock.application.repository.RecipeRepository;
+import edu.fafic.msstock.domain.Ingredient;
 import edu.fafic.msstock.domain.Recipe;
 import edu.fafic.msstock.shared.error.ConflictException;
 import edu.fafic.msstock.shared.error.NotFoundException;
+import edu.fafic.msstock.shared.service.IngredientService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +25,12 @@ public class RecipeService {
     private final RecipeRepository recipeRepository;
 
     private final RecipeMapper recipeMapper;
+
+    private final IngredientService ingredientService;
+
+    private final IngredientMapper ingredientMapper;
+
+    private final MongoTemplate mongoTemplate;
 
     public RecipeDTO create(RecipeDTO dto) {
         Optional<Recipe> existing = recipeRepository.findByMenuId(dto.getMenuId());
@@ -70,5 +82,36 @@ public class RecipeService {
     private Recipe getEntityOr404(String id) {
         return recipeRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Recipe não encontrado"));
+    }
+
+    public ProductionDTO serve(String id, int needed) {
+        Recipe recipe = getEntityOr404(id);
+        boolean served = false;
+
+        List<Ingredient> ingredients = recipe.getIngredients();
+
+        List<Ingredient> lacking = ingredients.stream()
+                .filter(in -> !ingredientService.exists(in))
+                .toList();
+
+        boolean hasEnough = ingredients.stream()
+                .allMatch(in -> ingredientService.find(in).getQuantity() >= in.getQuantity() * needed);
+
+        if (lacking.isEmpty() && hasEnough) {
+            ingredients.forEach(in -> ingredientService.consume(in, needed));
+            served = true;
+        }
+
+        List<IngredientDTO> lackingDTO = lacking.stream()
+                .map(ingredientMapper::toDTO)
+                .toList();
+
+        ProductionDTO dto = new ProductionDTO();
+        dto.setServed(served);
+        dto.setQuantity(needed);
+        dto.setRecipe(recipeMapper.toDTO(recipe));
+        dto.setLacking(lackingDTO);
+
+        return dto;
     }
 }

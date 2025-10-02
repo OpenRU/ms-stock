@@ -3,12 +3,15 @@ package edu.fafic.msstock.application.service;
 import edu.fafic.msstock.application.dto.ItemDTO;
 import edu.fafic.msstock.application.mapper.ItemMapper;
 import edu.fafic.msstock.application.repository.ItemRepository;
+import edu.fafic.msstock.domain.Ingredient;
 import edu.fafic.msstock.domain.Item;
 import edu.fafic.msstock.shared.error.ConflictException;
 import edu.fafic.msstock.shared.error.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +23,8 @@ public class ItemService {
     private final ItemRepository itemRepository;
 
     private final ItemMapper itemMapper;
+
+    private final MongoTemplate mongoTemplate;
 
     public ItemDTO create(ItemDTO dto) {
         if (itemRepository.existsByNameAndSupplier(dto.getName(), dto.getSupplier())) {
@@ -52,7 +57,6 @@ public class ItemService {
         return itemMapper.toDTO(saved);
     }
 
-    @Transactional
     public void delete(String id) {
         Item existing = getEntityOr404(id);
         itemRepository.delete(existing);

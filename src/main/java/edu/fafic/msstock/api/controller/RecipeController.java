@@ -1,5 +1,6 @@
 package edu.fafic.msstock.api.controller;
 
+import edu.fafic.msstock.application.dto.ProductionDTO;
 import edu.fafic.msstock.application.dto.RecipeDTO;
 import edu.fafic.msstock.application.service.RecipeService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -84,5 +85,18 @@ public class RecipeController {
     public ResponseEntity<Void> delete(@PathVariable String id) {
         recipeService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+
+    @Operation(summary = "Registrar a baixa no estoque dos ingredientes de uma receita")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "409", description = "Conflito", content = @Content),
+    })
+
+    @PostMapping("/{id}/serve")
+    public ResponseEntity<ProductionDTO> serve(@PathVariable String id, @RequestParam int quantity) {
+        ProductionDTO dto = recipeService.serve(id, quantity);
+        return dto.isServed() ? ResponseEntity.ok(dto) : ResponseEntity.status(HttpStatus.CONFLICT).body(dto);
     }
 }
