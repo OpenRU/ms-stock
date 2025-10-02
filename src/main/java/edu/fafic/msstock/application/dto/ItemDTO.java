@@ -17,11 +17,11 @@ public class ItemDTO {
     private String id;
 
     @NotBlank(message = "O campo 'name' é obrigatório")
-    @Schema(description = "Nome do item", example = "Café Torrado")
+    @Schema(description = "Nome do item", example = "Cuscuz")
     private String name;
 
     @Min(value = 0, message = "O campo 'quantity' não pode ser negativo")
-    @Schema(description = "Quantidade disponível do item", example = "42", minimum = "0")
+    @Schema(description = "Quantidade disponível do item", example = "1", minimum = "0")
     private int quantity;
 
     @NotNull(message = "O campo 'measurementUnit' é obrigatório")
